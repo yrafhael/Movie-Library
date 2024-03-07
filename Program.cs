@@ -1,6 +1,11 @@
 ﻿class Program
 {
-
+    // file paths for different types of data
+    private const string moviesFilePath = "movies.csv";
+    private const string ratingsFilePath = "ratings.csv";
+    private const string linksFilePath = "links.csv";
+    private const string tagsFilePath = "tags.csv";
+    
     static void Main(string[] args)
     {
         Console.WriteLine("Your Movies Library");
@@ -20,6 +25,118 @@
             // reading user choice 
             string choice = Console.ReadLine();
 
+            switch (choice)
+            {
+                case "1":
+                    // using method to add a new movie
+                    AddNewMovie(); 
+                    break;
+                case "2":
+                    ViewAllMovies(); 
+                    break;
+                case "3":
+                    ViewAllRatings(); 
+                    break;
+                case "4":
+                    ViewAllTags(); 
+                    break;
+                case "5":
+                    ViewAllLinks(); 
+                    break;
+                default:
+                    // exit the program if any other key is pressed
+                    Environment.Exit(0); 
+                    break;
+            }
+
+        }
+    }
+
+     // method to view all movies
+    static void ViewAllMovies()
+    {
+        // calling a method to view entities from file
+        ViewAllEntitiesFromFile(moviesFilePath, "MovieID", "Title", "Genres"); 
+    }
+
+    // method to view all links
+    static void ViewAllLinks()
+    {
+        ViewAllEntitiesFromFile(linksFilePath, "MovieID", "IMDB ID", "TMDB ID"); 
+    }
+
+    // method to view all tags
+    static void ViewAllTags()
+    {
+        ViewAllEntitiesFromFile(tagsFilePath, "UserID", "MovieID", "Tag", "TimeStamp"); 
+    }
+
+    // method to view all ratings
+    static void ViewAllRatings()
+    {
+        ViewAllEntitiesFromFile(ratingsFilePath, "UserID", "MovieID", "Rating", "TimeStamp"); 
+    }
+
+    // method to view all entities from a file
+    static void ViewAllEntitiesFromFile(string filePath, params string[] headers)
+    {
+        try
+        {
+            // Check if the file exists
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine($"No data found in {Path.GetFileName(filePath)}.");
+                return;
+            }
+
+            // Print header for the type of data being viewed
+            Console.WriteLine($"All {Path.GetFileNameWithoutExtension(filePath)}:");
+
+            // Read each line from the file and print its fields
+            foreach (string line in File.ReadAllLines(filePath))
+            {
+                string[] fields = line.Split(',');
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    Console.Write($"{headers[i]}: {fields[i].Trim()}, "); // Print each field with its header
+                }
+                Console.WriteLine(); // Move to the next line after printing all fields
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}"); // Print error message if an exception occurs
+        }
+    }
+
+    // Method to add a new movie
+    static void AddNewMovie()
+    {
+        try
+        {
+            Console.WriteLine("Enter movie details in the format: MovieID,Title,Genres");
+            string newMovie = Console.ReadLine();
+
+            // Check if the input is not empty
+            if (!string.IsNullOrWhiteSpace(newMovie))
+            {
+                // Append the new movie details to the file
+                using (StreamWriter writer = File.AppendText(moviesFilePath))
+                {
+                    writer.WriteLine(newMovie);
+                }
+                Console.WriteLine("Movie added successfully."); // Print success message
+            }
+            else
+            {
+                // print error message for invalid input
+                Console.WriteLine("Invalid input. Please try again."); 
+            }
+        }
+        catch (Exception ex)
+        {
+            // print error message if an exception occurs
+            Console.WriteLine($"An error occurred: {ex.Message}"); 
         }
     }
 }
