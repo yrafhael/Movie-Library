@@ -1,11 +1,16 @@
-﻿class Program
+﻿using NLog;
+
+class Program
 {
+    // initialize a logger instance
+    private static Logger logger = LogManager.GetCurrentClassLogger();
+
     // file paths for different types of data
     private const string moviesFilePath = "movies.csv";
     private const string ratingsFilePath = "ratings.csv";
     private const string linksFilePath = "links.csv";
     private const string tagsFilePath = "tags.csv";
-    
+
     static void Main(string[] args)
     {
         Console.WriteLine("Your Movies Library");
@@ -98,14 +103,19 @@
                 string[] fields = line.Split(',');
                 for (int i = 0; i < headers.Length; i++)
                 {
-                    Console.Write($"{headers[i]}: {fields[i].Trim()}, "); // Print each field with its header
+                    // print each field with its header
+                    Console.Write($"{headers[i]}: {fields[i].Trim()}, "); 
                 }
-                Console.WriteLine(); // Move to the next line after printing all fields
+                // move to the next line after printing all fields
+                Console.WriteLine(); 
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}"); // Print error message if an exception occurs
+            // Print error message if an exception occurs
+            Console.WriteLine($"An error occurred: {ex.Message}"); 
+            // log the error using NLog
+            logger.Error(ex, $"An error occurred while processing file: {filePath}"); 
         }
     }
 
@@ -136,7 +146,9 @@
         catch (Exception ex)
         {
             // print error message if an exception occurs
-            Console.WriteLine($"An error occurred: {ex.Message}"); 
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            // log the error using NLog
+            logger.Error(ex, "An error occurred while adding a new movie.");  
         }
     }
 }
