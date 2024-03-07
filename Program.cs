@@ -34,52 +34,52 @@ class Program
             {
                 case "1":
                     // using method to add a new movie
-                    AddNewMovie(); 
+                    AddNewMovie();
                     break;
                 case "2":
-                    ViewAllMovies(); 
+                    ViewAllMovies();
                     break;
                 case "3":
-                    ViewAllRatings(); 
+                    ViewAllRatings();
                     break;
                 case "4":
-                    ViewAllTags(); 
+                    ViewAllTags();
                     break;
                 case "5":
-                    ViewAllLinks(); 
+                    ViewAllLinks();
                     break;
                 default:
                     // exit the program if any other key is pressed
-                    Environment.Exit(0); 
+                    Environment.Exit(0);
                     break;
             }
 
         }
     }
 
-     // method to view all movies
+    // method to view all movies
     static void ViewAllMovies()
     {
         // calling a method to view entities from file
-        ViewAllEntitiesFromFile(moviesFilePath, "MovieID", "Title", "Genres"); 
+        ViewAllEntitiesFromFile(moviesFilePath, "MovieID", "Title", "Genres");
     }
 
     // method to view all links
     static void ViewAllLinks()
     {
-        ViewAllEntitiesFromFile(linksFilePath, "MovieID", "IMDB ID", "TMDB ID"); 
+        ViewAllEntitiesFromFile(linksFilePath, "MovieID", "IMDB ID", "TMDB ID");
     }
 
     // method to view all tags
     static void ViewAllTags()
     {
-        ViewAllEntitiesFromFile(tagsFilePath, "UserID", "MovieID", "Tag", "TimeStamp"); 
+        ViewAllEntitiesFromFile(tagsFilePath, "UserID", "MovieID", "Tag", "TimeStamp");
     }
 
     // method to view all ratings
     static void ViewAllRatings()
     {
-        ViewAllEntitiesFromFile(ratingsFilePath, "UserID", "MovieID", "Rating", "TimeStamp"); 
+        ViewAllEntitiesFromFile(ratingsFilePath, "UserID", "MovieID", "Rating", "TimeStamp");
     }
 
     // method to view all entities from a file
@@ -94,7 +94,7 @@ class Program
                 return;
             }
 
-            // Print header for the type of data being viewed
+            // print header for the type of data being viewed
             Console.WriteLine($"All {Path.GetFileNameWithoutExtension(filePath)}:");
 
             // Read each line from the file and print its fields
@@ -104,18 +104,18 @@ class Program
                 for (int i = 0; i < headers.Length; i++)
                 {
                     // print each field with its header
-                    Console.Write($"{headers[i]}: {fields[i].Trim()}, "); 
+                    Console.Write($"{headers[i]}: {fields[i].Trim()}, ");
                 }
                 // move to the next line after printing all fields
-                Console.WriteLine(); 
+                Console.WriteLine();
             }
         }
         catch (Exception ex)
         {
             // Print error message if an exception occurs
-            Console.WriteLine($"An error occurred: {ex.Message}"); 
+            Console.WriteLine($"An error occurred: {ex.Message}");
             // log the error using NLog
-            logger.Error(ex, $"An error occurred while processing file: {filePath}"); 
+            logger.Error(ex, $"An error occurred while processing file: {filePath}");
         }
     }
 
@@ -135,12 +135,12 @@ class Program
                 {
                     writer.WriteLine(newMovie);
                 }
-                Console.WriteLine("Movie added successfully."); // Print success message
+                Console.WriteLine("Movie added successfully.");
             }
             else
             {
                 // print error message for invalid input
-                Console.WriteLine("Invalid input. Please try again."); 
+                Console.WriteLine("Invalid input. Please try again.");
             }
         }
         catch (Exception ex)
@@ -148,7 +148,7 @@ class Program
             // print error message if an exception occurs
             Console.WriteLine($"An error occurred: {ex.Message}");
             // log the error using NLog
-            logger.Error(ex, "An error occurred while adding a new movie.");  
+            logger.Error(ex, "An error occurred while adding a new movie.");
         }
     }
 }
